@@ -58,3 +58,48 @@ Then, we organize all the weights as a matrix - where each row corresponds with 
 We can then add the biases as another vector. Finally, we can wrap the sigmoid around everything - this effectively means that we're going to apply the sigmoid function to each resulting vector element. 
 
 ![image](../Images/30.png)
+
+#### Neural Network Training
+We use cost functions to penalize incorrect answers. This is calculated by taking the square of the diff from model output and the correct output. Basically MSE.
+
+![image](../Images/31.png)
+
+We then run this across all the training data examples and come up with the average cost. Ideally, we'd liketo find a (set of) inputs to minimize this cost function result - we can do this by finding the local minimum. 
+
+ie - go left, go right. Then go the direction where the minimum is until you get to the local minimum.
+
+Note that the local minimum may be different than the global minimum - it depends on where you start. But finding the global minimum is incredibly challenging. 
+
+![image](../Images/32.png)
+
+It's also helpful to make your step sizes proportional to the slope, the step sizes get smaller and smaller the closer you get to the local minimum. This helps avoid overshooting. 
+
+Getting more detailed, minimizing the cost function is effecitvely trying a bunch of weights and biases on a set of known data.
+
+![image](../Images/33.png)
+
+#### Backpropagation
+
+![image](../Images/34.png)
+
+To get to the final output we're looking for, we have three levers:
+
+1. Increase bias
+2. Increase weights in proportion to the last layer
+3. Change the weights in proportion to the weights (we can't actually do that - but good to keep track of)
+
+By adding together all these desired effects, we effectively have all the nudges we want to apply to the previous layer. 
+
+You can then recursively apply the same process to each layer before that. 
+
+But... this has all been for one training example. If we optimize for just one example, we're incentivizing the model to return "2" for every new inference - even if it's "5" - which is not ideal.
+
+So we run this process for every single training example and average all the desired changes to get the most optimal weights. 
+
+![image](../Images/35.png)
+
+In practice, this takes forever and we don't need to go through every.single.iteration.
+
+#### Stochastic Gradient Descent
+
+What we do, instead, is we randomly shuffle our training data and divide it up into mini batches. We run the gradient descent on these mini batches. 
